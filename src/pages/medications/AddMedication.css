@@ -1,0 +1,660 @@
+/* 
+ * Add Medication - Multi-Step Form
+ * Light mode design with professional medical styling
+ */
+
+.add-medication-screen {
+    min-height: 100vh;
+    background: #FAFBFC;
+    display: flex;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Sidebar Stepper */
+.step-sidebar {
+    width: 280px;
+    background: white;
+    border-right: 1px solid #E2E8F0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    margin-bottom: 3rem;
+}
+
+.sidebar-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1A202C;
+    margin: 0;
+}
+
+.sidebar-header p {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 0.5rem 0 0 0;
+}
+
+/* Stepper */
+.stepper {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    position: relative;
+}
+
+.step-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.step-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.step-circle.completed {
+    background: #2B6CB0;
+    color: white;
+}
+
+.step-circle.current {
+    background: #2B6CB0;
+    color: white;
+    box-shadow: 0 0 0 4px rgba(43, 108, 176, 0.2);
+}
+
+.step-circle.upcoming {
+    background: #E2E8F0;
+    color: #94a3b8;
+}
+
+.step-line {
+    width: 2px;
+    height: 40px;
+    background: #E2E8F0;
+    margin: 8px 0;
+}
+
+.step-line.completed {
+    background: #2B6CB0;
+}
+
+.step-content {
+    padding-top: 6px;
+    padding-bottom: 48px;
+}
+
+.step-title {
+    font-weight: 600;
+    color: #1A202C;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.step-title.muted {
+    color: #94a3b8;
+}
+
+.step-subtitle {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin: 0.25rem 0 0 0;
+}
+
+/* Main Content Area */
+.form-main {
+    flex: 1;
+    padding: 2rem 3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-header {
+    margin-bottom: 2rem;
+}
+
+.form-header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1A202C;
+    margin: 0 0 0.5rem 0;
+}
+
+.form-header p {
+    font-size: 1rem;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Form Section */
+.form-section {
+    flex: 1;
+    max-width: 600px;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #1A202C;
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #1A202C;
+    transition: all 0.2s;
+    background: white;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #2B6CB0;
+    box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.1);
+}
+
+.form-input::placeholder {
+    color: #94a3b8;
+}
+
+/* Input with Icon */
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon .form-input {
+    padding-left: 2.75rem;
+}
+
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+}
+
+/* Input Row */
+.input-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.input-row .form-group {
+    flex: 1;
+}
+
+/* Scan Button */
+.scan-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    color: #2B6CB0;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.scan-btn:hover {
+    background: #F7FAFC;
+    border-color: #2B6CB0;
+}
+
+/* Autocomplete Dropdown */
+.autocomplete-wrapper {
+    position: relative;
+}
+
+.autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    max-height: 240px;
+    overflow-y: auto;
+    margin-top: 4px;
+}
+
+.autocomplete-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.autocomplete-item:hover {
+    background: #F7FAFC;
+}
+
+.autocomplete-icon {
+    width: 40px;
+    height: 40px;
+    background: #EDF2F7;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.autocomplete-info h4 {
+    font-weight: 600;
+    color: #1A202C;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.autocomplete-info p {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin: 0.125rem 0 0 0;
+}
+
+/* Time Picker */
+.time-picker-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.time-input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.time-input {
+    width: 70px;
+    padding: 0.75rem;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: center;
+    font-family: inherit;
+}
+
+.time-input:focus {
+    outline: none;
+    border-color: #2B6CB0;
+}
+
+.time-separator {
+    font-size: 1.25rem;
+    color: #64748b;
+}
+
+.remove-time-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: #FEE2E2;
+    color: #DC2626;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.add-time-link {
+    background: none;
+    border: none;
+    color: #2B6CB0;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.add-time-link:hover {
+    text-decoration: underline;
+}
+
+/* Radio Options */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.radio-option:hover {
+    border-color: #CBD5E0;
+}
+
+.radio-option.selected {
+    border-color: #2B6CB0;
+    box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.1);
+}
+
+.radio-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #CBD5E0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.radio-option.selected .radio-circle {
+    border-color: #2B6CB0;
+}
+
+.radio-circle::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #2B6CB0;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.radio-option.selected .radio-circle::after {
+    opacity: 1;
+}
+
+.radio-label {
+    font-weight: 500;
+    color: #1A202C;
+}
+
+/* Context Tags */
+.context-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.context-tag {
+    padding: 0.6rem 1.25rem;
+    border: 1px solid #E2E8F0;
+    border-radius: 99px;
+    background: white;
+    color: #475569;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.context-tag:hover {
+    border-color: #2B6CB0;
+    color: #2B6CB0;
+}
+
+.context-tag.selected {
+    background: #2B6CB0;
+    border-color: #2B6CB0;
+    color: white;
+}
+
+/* Photo Upload */
+.photo-upload {
+    width: 160px;
+    height: 160px;
+    border: 2px dashed #E2E8F0;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #64748b;
+}
+
+.photo-upload:hover {
+    border-color: #2B6CB0;
+    color: #2B6CB0;
+}
+
+.photo-upload-icon {
+    font-size: 2rem;
+}
+
+.photo-upload-text {
+    font-size: 0.85rem;
+    text-align: center;
+    max-width: 120px;
+}
+
+/* Review Card */
+.review-card {
+    background: #F7FAFC;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.review-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem 0;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.review-section:last-child {
+    border-bottom: none;
+}
+
+.review-section h4 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.5rem 0;
+}
+
+.review-section p {
+    font-size: 1rem;
+    color: #1A202C;
+    margin: 0;
+    font-weight: 500;
+}
+
+.edit-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #64748b;
+    transition: all 0.2s;
+}
+
+.edit-btn:hover {
+    color: #2B6CB0;
+    background: #EDF2F7;
+}
+
+/* Notification Preview */
+.notification-preview {
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.notification-icon {
+    width: 40px;
+    height: 40px;
+    background: #2B6CB0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.notification-content h4 {
+    font-weight: 600;
+    color: #1A202C;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.notification-content p {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin: 0.25rem 0 0 0;
+}
+
+/* Bottom Action Bar */
+.action-bar {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    border-top: 1px solid #E2E8F0;
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 -3rem;
+}
+
+.step-indicator-text {
+    font-size: 0.9rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-back {
+    padding: 0.75rem 1.5rem;
+    background: white;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    color: #475569;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.btn-back:hover {
+    background: #F7FAFC;
+}
+
+.btn-next {
+    padding: 0.75rem 1.5rem;
+    background: #2B6CB0;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.btn-next:hover {
+    background: #2563eb;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .add-medication-screen {
+        flex-direction: column;
+    }
+
+    .step-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #E2E8F0;
+        padding: 1rem;
+    }
+
+    .stepper {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .step-item {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .step-content {
+        display: none;
+    }
+
+    .step-line {
+        width: 40px;
+        height: 2px;
+        margin: 0 8px;
+    }
+
+    .form-main {
+        padding: 1.5rem;
+    }
+
+    .action-bar {
+        margin: 0 -1.5rem;
+        padding: 1rem 1.5rem;
+    }
+}

@@ -1,0 +1,375 @@
+/* 
+ * Caregiver Dashboard - Using CSS Variables from index.css
+ * Supports both Dark and Light modes via prefers-color-scheme
+ */
+
+.caregiver-dashboard {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-navy) 50%, var(--bg-dark) 100%);
+    padding: 2rem;
+    font-family: var(--font-family);
+    color: var(--text-primary);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header Section */
+.dashboard-header-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+}
+
+.greeting-section h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.greeting-section p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+.status-badge-calm {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 99px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Quick Filters */
+.quick-filters {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.filter-btn {
+    padding: 0.6rem 1.25rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn:hover {
+    background: var(--card-bg);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.filter-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: var(--glow-primary);
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+/* Left: Timeline */
+.timeline-river {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline-river::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 50%, var(--glass-border) 100%);
+    border-radius: 2px;
+}
+
+.river-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.river-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.river-connector {
+    position: absolute;
+    left: -2.6rem;
+    top: 2rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg-dark);
+    border: 3px solid var(--glass-border);
+    z-index: 2;
+}
+
+.river-connector.taken {
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+}
+
+.river-connector.due {
+    border-color: #fbbf24;
+    background: var(--bg-dark);
+}
+
+.river-connector.missed {
+    border-color: #ef4444;
+    background: #ef4444;
+}
+
+.river-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.pill-nickname {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pill-time {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.river-person {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.river-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--glass-border);
+}
+
+.river-message {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Right Column: Widgets */
+.widgets-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.widget-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 1.5rem;
+}
+
+.widget-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Adherence Graph */
+.adherence-graph {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 100px;
+    padding-top: 1rem;
+}
+
+.graph-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.graph-bar {
+    width: 8px;
+    background: var(--glass-border);
+    border-radius: 4px;
+    position: relative;
+}
+
+.graph-bar.filled {
+    background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.graph-day {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Care Pulse */
+.care-pulse {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+.sentiment-dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    position: relative;
+}
+
+.sentiment-dot.active {
+    background: rgba(0, 212, 255, 0.2);
+    transform: scale(1.1);
+    box-shadow: var(--glow-accent);
+}
+
+.sentiment-line {
+    height: 2px;
+    flex: 1;
+    background: var(--glass-border);
+}
+
+/* Pharmacy Sync */
+.pharmacy-sync {
+    background: rgba(65, 105, 225, 0.15);
+    border: 1px solid rgba(65, 105, 225, 0.3);
+    border-radius: 16px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sync-icon {
+    font-size: 1.5rem;
+}
+
+.sync-info h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0;
+}
+
+.sync-info p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Bottom Actions */
+.quick-manage {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--card-border);
+    padding: 0.75rem;
+    border-radius: 20px;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 100;
+}
+
+.manage-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 14px;
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+}
+
+.manage-btn:hover {
+    background: var(--glass-bg);
+    color: var(--text-primary);
+}
+
+.manage-btn.primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: white;
+}
+
+.manage-btn.primary:hover {
+    box-shadow: var(--glow-button);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Light mode specific */
+@media (prefers-color-scheme: light) {
+    .river-connector {
+        background: var(--bg-dark);
+    }
+
+    .river-connector.taken {
+        background: var(--primary);
+        border-color: var(--primary);
+    }
+}

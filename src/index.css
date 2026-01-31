@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* Color Palette - Dark Mode (Default) */
+  --bg-dark: #0a0e27;
+  --bg-navy: #1a1f4e;
+  --primary: #4169E1;
+  --primary-light: #5a7ef5;
+  --accent: #00D4FF;
+  --accent-glow: rgba(0, 212, 255, 0.5);
+  --white: #ffffff;
+  --white-soft: rgba(255, 255, 255, 0.9);
+  --white-muted: rgba(255, 255, 255, 0.7);
+  --white-subtle: rgba(255, 255, 255, 0.5);
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: 20px;
+
+  /* Shadows & Glows */
+  --glow-primary: 0 0 20px rgba(65, 105, 225, 0.4);
+  --glow-accent: 0 0 30px rgba(0, 212, 255, 0.3);
+  --glow-button: 0 4px 30px rgba(0, 212, 255, 0.4);
+
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Spacing */
+  --navbar-height: 80px;
+
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
+
+  /* Card Colors */
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(255, 255, 255, 0.1);
+}
+
+/* Light Mode */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg-dark: #f0f7ff;
+    --bg-navy: #e0ecff;
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --glow-button: 0 4px 20px rgba(65, 105, 225, 0.25);
+  }
+}
+
+/* Force Light Mode Class */
+.light-mode {
+  --bg-dark: #f0f7ff;
+  --bg-navy: #e0ecff;
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --glow-button: 0 4px 20px rgba(65, 105, 225, 0.25);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-navy) 50%, var(--bg-dark) 100%);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Utility Classes */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+.glow-text {
+  text-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* Button Styles */
+.btn {
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: var(--white);
+  border: none;
+  box-shadow: var(--glow-button);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(0, 212, 255, 0.5);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--white);
+  border: 2px solid var(--glass-border);
+}
+
+.btn-outline:hover {
+  background: var(--glass-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-filled {
+  background: var(--glass-bg);
+  color: var(--white);
+  border: 1px solid var(--glass-border);
+}
+
+.btn-filled:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
+}
+
+/* Selection */
+::selection {
+  background: var(--accent);
+  color: var(--bg-dark);
+}
