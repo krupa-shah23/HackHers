@@ -23,6 +23,23 @@ const medicationSchema = new mongoose.Schema(
       type: String,
     },
 
+    strength: {
+      type: String,
+      trim: true,
+    },
+
+    notes: {
+      type: String,
+      trim: true,
+    },
+
+    contextTags: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
+
     schedule: {
       times: [
         {
