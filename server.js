@@ -1,5 +1,7 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
 import mongoose from "mongoose";
 import userRoutes from "./routes/userRoute.js";
 import careProfileRoutes from "./routes/careProfileRoute.js";
@@ -10,7 +12,7 @@ import dailyCheckInRoute from "./routes/dailyCheckInRoute.js";
 import logger from "./middleware/logger.js";
 import authRoutes from "./routes/authRoute.js";
 
-dotenv.config();
+
 
 const app = express();
 app.use(express.json());
