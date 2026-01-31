@@ -12,8 +12,6 @@ import dailyCheckInRoute from "./routes/dailyCheckInRoute.js";
 import logger from "./middleware/logger.js";
 import authRoutes from "./routes/authRoute.js";
 
-
-
 const app = express();
 app.use(express.json());
 
