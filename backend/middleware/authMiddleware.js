@@ -112,6 +112,10 @@ export const forgotPassword = async (req, res) => {
       text: `Your OTP is ${otp}. It expires in 5 minutes.`,
     });
 
+    console.log("---------------------------------------------------");
+    console.log(`🔐 [DEBUG] OTP for ${email}: ${otp}`);
+    console.log("---------------------------------------------------");
+
     res.json({ message: "OTP sent" });
   } catch (err) {
   console.error("EMAIL ERROR:", err);

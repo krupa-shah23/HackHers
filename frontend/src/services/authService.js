@@ -33,6 +33,18 @@ const authService = {
       const response = await api.get('/care-profiles');
       // Return first profile if exists
       return response.data && response.data.length > 0 ? response.data[0] : null;
+  },
+
+  // Forgot Password (Send OTP)
+  forgotPassword: async (email) => {
+    const response = await api.post('/auth/forgot-password', { email });
+    return response.data;
+  },
+
+  // Reset Password (Verify OTP & New Password)
+  resetPassword: async (email, otp, newPassword) => {
+    const response = await api.post('/auth/reset-password', { email, otp, newPassword });
+    return response.data;
   }
 };
 
