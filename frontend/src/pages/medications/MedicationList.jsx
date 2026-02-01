@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './MedicationList.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { getMedicationsByCareProfile } from '../../services/medications';
 
 const MedicationList = () => {
     const navigate = useNavigate();
@@ -15,10 +15,18 @@ const MedicationList = () => {
     useEffect(() => {
         const fetchMedications = async () => {
             try {
-                // Hardcoded careProfileId for now
-                const careProfileId = "507f1f77bcf86cd799439011"; 
-                const response = await axios.get(`http://localhost:5000/api/medications/care-profile/${careProfileId}`);
-                setMedications(response.data);
+                const careProfileId = localStorage.getItem('careProfileId');
+                
+                if (!careProfileId || careProfileId === 'demo_user_123') {
+                     // Mock data if demo or no profile
+                     // You might want to move mock data to a shared utility or just keep it simple here
+                     setMedications([]); // Or add mock data here
+                     setLoading(false);
+                     return;
+                }
+
+                const data = await getMedicationsByCareProfile(careProfileId);
+                setMedications(data);
                 setLoading(false);
             } catch (err) {
                 console.error("Error fetching medications:", err);
@@ -132,7 +140,7 @@ const MedicationList = () => {
                         </div>
 
                         <div className="card-actions">
-                            <button className="action-btn">✏️ Edit</button>
+                            <button className="action-btn" onClick={() => alert("Edit feature coming soon!")}>✏️ Edit</button>
                             <button className="action-btn primary">✓ Mark Taken</button>
                         </div>
                     </div>

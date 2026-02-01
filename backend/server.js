@@ -8,6 +8,7 @@ import careProfileRoutes from "./routes/careProfileRoute.js";
 import medicationRoute from "./routes/medicationRoute.js";
 import medicationLogRoute from "./routes/medicationLogRoute.js";
 import refillRoute from "./routes/refillRoute.js";
+import pharmacyRoute from "./routes/pharmacyRoute.js";
 import dailyCheckInRoute from "./routes/dailyCheckInRoute.js";
 import logger from "./middleware/logger.js";
 import authRoutes from "./routes/authRoute.js";
@@ -37,7 +38,12 @@ app.use("/api/medication-logs", medicationLogRoute);
 
 app.use("/api/refills", refillRoute);
 
+app.use("/api/pharmacies", pharmacyRoute);
+
 app.use("/api/daily-checkins", dailyCheckInRoute);
+
+import insightsRoutes from "./routes/insightsRoute.js";
+app.use("/api/insights", insightsRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {
@@ -47,5 +53,5 @@ app.use((err, req, res, next) => {
 
 
 app.listen(5000, () => {
-  console.log("Server running on port 5000");
+  console.log("Server running on port 5000 (DEBUG MODE)");
 });

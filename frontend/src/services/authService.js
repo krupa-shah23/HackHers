@@ -25,7 +25,15 @@ const authService = {
   // Logout user
   logout: () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('careProfileId');
   },
+
+  // Get default care profile
+  getDefaultCareProfile: async () => {
+      const response = await api.get('/care-profiles');
+      // Return first profile if exists
+      return response.data && response.data.length > 0 ? response.data[0] : null;
+  }
 };
 
 export default authService;

@@ -3,11 +3,11 @@ import User from "../models/userModel.js";
 
 export const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select("-password");
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    // Ensure req.user exists (protected route)
+    if (!req.user) {
+        return res.status(401).json({ message: "Not authorized" });
     }
-    res.json(user);
+    res.json(req.user); // req.user is already fetched by protect middleware
   } catch (error) {
     console.error("getMe Error:", error);
     res.status(500).json({ message: "Server Error in getMe", error: error.message });
@@ -15,11 +15,15 @@ export const getMe = async (req, res) => {
 };
 
 export const updateMe = async (req, res) => {
-  const updatedUser = await User.findByIdAndUpdate(
-    req.userId,
-    req.body,
-    { new: true }
-  ).select("-password");
+  try {
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user._id, // Fix: use req.user._id
+        req.body,
+        { new: true }
+      ).select("-password");
 
-  res.json(updatedUser);
+      res.json(updatedUser);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
 };

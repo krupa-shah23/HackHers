@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Medication from "../models/medicationModel.js";
 
 // Create medication
@@ -87,6 +88,10 @@ export const createMedication = async (req, res) => {
 export const getMedicationsByCareProfile = async (req, res) => {
   try {
     const { careProfileId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(careProfileId)) {
+        return res.status(400).json({ message: "Invalid Care Profile ID" });
+    }
 
     const medications = await Medication.find({
       careProfileId,

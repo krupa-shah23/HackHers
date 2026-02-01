@@ -88,6 +88,10 @@ import OnboardingDone from "./pages/onboarding/OnboardingDone";
 import CaregiverDashboard from "./pages/dashboard/CaregiverDashboard";
 import ElderDashboard from "./pages/dashboard/ElderDashboard";
 import AddMedication from "./pages/medications/AddMedication";
+import MedicationList from "./pages/medications/MedicationList";
+import RefillDashboard from "./pages/pharmacy/RefillDashboard";
+import PharmacyFinder from "./pages/pharmacy/PharmacyFinder";
+import DailyCheckIn from "./pages/dashboard/DailyCheckIn";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
@@ -114,7 +118,11 @@ export default function App() {
       {/* DASHBOARDS */}
       <Route path="/dashboard/caregiver" element={<CaregiverDashboard />} />
       <Route path="/dashboard/elder" element={<ElderDashboard />} />
+      <Route path="/medications" element={<MedicationList />} />
       <Route path="/medications/add" element={<AddMedication />} />
+      <Route path="/refills" element={<RefillDashboard />} />
+      <Route path="/pharmacy-finder" element={<PharmacyFinder />} />
+      <Route path="/check-in" element={<DailyCheckIn />} />
     </Route>
   </Routes>
 </BrowserRouter>

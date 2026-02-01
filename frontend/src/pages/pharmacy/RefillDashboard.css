@@ -1,0 +1,186 @@
+/* Refill Dashboard Container */
+.refill-dashboard {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+.refill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-content h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: var(--text-primary);
+}
+
+.header-content p {
+    color: var(--text-secondary);
+    margin: 0.25rem 0 0;
+}
+
+.find-pharmacy-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.find-pharmacy-btn:hover {
+    opacity: 0.9;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Sections */
+.recommendation-section {
+    margin-bottom: 2.5rem;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+}
+
+.refill-section {
+    margin-bottom: 3rem;
+}
+
+.refill-section.urgent .section-title {
+    color: #dc2626;
+    /* Red for usage */
+}
+
+/* Grid Layout */
+.refill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Horizontal Scroll for Recommendations */
+.recommendation-scroll {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scrollbar-width: thin;
+}
+
+.recommendation-card {
+    min-width: 200px;
+    background: white;
+    /* Fallback */
+    background: var(--card-bg, #ffffff);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.recommendation-card h4 {
+    margin: 0 0 0.5rem;
+    color: var(--text-primary);
+}
+
+.recommendation-card .meta {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    font-weight: 600;
+    color: #059669;
+    /* Green */
+}
+
+.recommendation-card button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Loading/Empty States */
+.loading-state,
+.empty-state {
+    text-align: center;
+    padding: 4rem;
+    color: var(--text-secondary);
+    background: var(--card-bg, #fff);
+    border-radius: 12px;
+}
+
+.loading-spinner {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.add-med-btn {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Savings Badge */
+.savings-badge {
+    display: inline-block;
+    background: #fef3c7;
+    color: #d97706;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+}
+
+/* Dark Mode support if needed via CSS vars */
+@media (prefers-color-scheme: dark) {
+    .recommendation-card {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+}

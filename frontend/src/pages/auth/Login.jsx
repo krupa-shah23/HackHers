@@ -64,6 +64,20 @@ export default function Login() {
       // data.user should process from backend response
       // backend returns { token, user: { id, email } }
       login(data.user);
+      
+      // Fetch and store default care profile
+      try {
+          const profileRes = await authService.getDefaultCareProfile();
+          if (profileRes && profileRes._id) {
+              localStorage.setItem('careProfileId', profileRes._id);
+          } else {
+              // Create one if missing? Or handle in AddMedication
+              console.log("No care profile found, using demo/default.");
+          }
+      } catch (e) {
+          console.warn("Failed to fetch default profile:", e);
+      }
+
       navigate("/onboarding/role");
     } catch (err) {
       console.error("Login failed:", err);

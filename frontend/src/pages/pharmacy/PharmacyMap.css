@@ -1,0 +1,250 @@
+.pharmacy-map-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 200px);
+    min-height: 500px;
+}
+
+.map-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem;
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.map-title h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #1e293b;
+}
+
+.searching-for {
+    display: block;
+    font-size: 0.813rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+}
+
+.close-map-btn {
+    background: #f1f5f9;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.close-map-btn:hover {
+    background: #e2e8f0;
+}
+
+.map-wrapper {
+    flex: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    min-height: 300px;
+}
+
+/* Popup Styles */
+.user-popup {
+    text-align: center;
+    padding: 0.25rem;
+}
+
+.pharmacy-popup {
+    min-width: 200px;
+    padding: 0.25rem;
+}
+
+.pharmacy-popup h4 {
+    margin: 0 0 0.25rem;
+    color: #1e293b;
+    font-size: 1rem;
+}
+
+.pharmacy-popup .address {
+    margin: 0 0 0.5rem;
+    color: #64748b;
+    font-size: 0.75rem;
+}
+
+.price-tag {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+}
+
+.price-tag.in-stock {
+    background: #dcfce7;
+}
+
+.price-tag.out-of-stock {
+    background: #fee2e2;
+}
+
+.price-tag .price {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #166534;
+}
+
+.price-tag .stock-status {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.connected-badge {
+    font-size: 0.75rem;
+    color: #166534;
+    background: #dcfce7;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.delivery-info {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+
+.popup-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.popup-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.popup-btn.call {
+    background: #3b82f6;
+    color: white;
+}
+
+.popup-btn.call:hover {
+    background: #2563eb;
+}
+
+.popup-btn.navigate {
+    background: #10b981;
+    color: white;
+}
+
+.popup-btn.navigate:hover {
+    background: #059669;
+}
+
+/* Pharmacy List */
+.pharmacy-list {
+    margin-top: 1rem;
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    max-height: 200px;
+    overflow: hidden;
+}
+
+.pharmacy-list h3 {
+    margin: 0 0 0.75rem;
+    font-size: 0.938rem;
+    color: #1e293b;
+}
+
+.list-scroll {
+    overflow-y: auto;
+    max-height: 140px;
+}
+
+.pharmacy-list-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 0.75rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.pharmacy-list-item:last-child {
+    margin-bottom: 0;
+}
+
+.list-item-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 0.25rem;
+}
+
+.list-item-main strong {
+    font-size: 0.875rem;
+    color: #1e293b;
+}
+
+.distance {
+    font-size: 0.75rem;
+    color: #64748b;
+    background: #e5e7eb;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+}
+
+.list-address {
+    width: 100%;
+    margin: 0 0 0.25rem;
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.list-price {
+    margin-right: auto;
+}
+
+.price-text {
+    font-weight: 600;
+    color: #166534;
+}
+
+.out-text {
+    font-size: 0.75rem;
+    color: #dc2626;
+}
+
+.list-actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.list-actions button {
+    background: #e5e7eb;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.list-actions button:hover {
+    background: #d1d5db;
+}

@@ -28,7 +28,10 @@ export default function Signup() {
       navigate("/login");
     } catch (err) {
       console.error("Signup failed", err);
-      setError("Failed to create account. Please try again.");
+      if (err.response) {
+          console.error("SERVER ERROR:", err.response.data);
+      }
+      setError(err.response?.data?.message || "Failed to create account. Please try again.");
     }
   };
 

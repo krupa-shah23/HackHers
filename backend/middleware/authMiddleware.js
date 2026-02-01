@@ -35,14 +35,19 @@ export const protect = async (req, res, next) => {
 export const validateLogin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    console.log("Login attempt for:", email);
 
     const user = await User.findOne({ email });
-    if (!user)
-      return res.status(400).json({ message: "Invalid credentials" });
+    if (!user) {
+        console.log("User not found during login.");
+        return res.status(400).json({ message: "Invalid credentials" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch) {
+        console.log("Password mismatch.");
+        return res.status(400).json({ message: "Invalid credentials" });
+    }
 
     req.user = user; // passed to next middleware (JWT signing)
     next();
@@ -54,17 +59,21 @@ export const validateLogin = async (req, res, next) => {
 // SIGNUP HANDLER
 export const signup = async (req, res) => {
   try {
+    console.log("Signup Request Body:", req.body);
     const { name, email, password } = req.body;
 
     if (!name || !email || !password)
       return res.status(400).json({ message: "All fields required" });
 
+    console.log("Checking for existing user...");
     const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({ message: "User already exists" });
 
+    console.log("Hashing password...");
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    console.log("Creating user...");
     await User.create({
       name,
       email,
@@ -74,7 +83,10 @@ export const signup = async (req, res) => {
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
     console.error("Signup Error:", err);
-    res.status(500).json({ message: "Signup failed", error: err.message });
+    res.status(500).json({ 
+        message: "Signup failed", 
+        error: err.toString()
+    });
   }
 };
 

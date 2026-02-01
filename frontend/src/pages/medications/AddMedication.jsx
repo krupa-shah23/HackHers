@@ -1,25 +1,29 @@
 import { useState } from 'react';
-import './AddMedication.css';
 import { useNavigate } from 'react-router-dom';
-import { addMedication } from '../../services/api';
+import { createMedication } from '../../services/medications';
+import MedicationScanner from '../../components/MedicationScanner';
+import './AddMedication.css';
 
 const AddMedication = () => {
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState(1);
     const [showAutocomplete, setShowAutocomplete] = useState(false);
-    
+    const [saving, setSaving] = useState(false);
+
     // Form State
     const [formData, setFormData] = useState({
         medicationName: '',
-        type: 'Tablet', // Default type
-        dosage: '',
+        strength: '',
         times: ['09:00'],
         frequency: 'daily',
         contextTags: [],
         notes: '',
-        image: null, // For file upload
-        imagePreview: null // For preview
+        assignedTo: 'Family',
+        type: 'Tablet', // Default type
+        image: null // File object
     });
+
+    const [previewUrl, setPreviewUrl] = useState(null);
 
     // Mock autocomplete suggestions
     const suggestions = [
@@ -30,70 +34,76 @@ const AddMedication = () => {
     ];
 
     const steps = [
-        { id: 1, title: 'Medication Info', subtitle: 'Name, type & dosage' },
+        { id: 1, title: 'Medication Info', subtitle: 'Name and strength' },
         { id: 2, title: 'Schedule', subtitle: 'When to take' },
-        { id: 3, title: 'Details', subtitle: 'Photo & Instructions' },
+        { id: 3, title: 'Details', subtitle: 'Additional info' },
         { id: 4, title: 'Review', subtitle: 'Confirm details' }
     ];
 
     const contextOptions = ['With food', 'Empty stomach', 'Before bed', 'As needed'];
-    const medicationTypes = ['Tablet', 'Capsule', 'Syrup', 'Injection', 'Inhaler'];
+    const typeOptions = ['Tablet', 'Capsule', 'Syrup', 'Injection', 'Inhaler', 'Other'];
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setFormData(prev => ({ ...prev, image: file }));
+            setPreviewUrl(URL.createObjectURL(file));
+        }
+    };
 
     const handleNext = async () => {
         if (currentStep < 4) {
             setCurrentStep(currentStep + 1);
         } else {
-            // Final step: Save medication
+            // Save medication to API
             try {
+                setSaving(true);
+                let careProfileId = localStorage.getItem('careProfileId');
+                
+                // If demo user or invalid, send empty to trigger backend auto-creation/default
+                if (!careProfileId || careProfileId === 'demo_user_123') {
+                    careProfileId = '';
+                }
+
                 const data = new FormData();
                 data.append('name', formData.medicationName);
+                data.append('dosage', formData.strength); // Map strength to dosage
                 data.append('type', formData.type);
-                data.append('dosage', formData.dosage);
                 
-                // Construct schedule object matching Mongoose schema
+                // Construct schedule object
                 const scheduleObj = {
                     times: formData.times,
                     frequency: formData.frequency,
                     startDate: new Date()
                 };
-                data.append('schedule', JSON.stringify(scheduleObj)); 
-
-                data.append('contextTags', JSON.stringify(formData.contextTags)); 
+                data.append('schedule', JSON.stringify(scheduleObj));
+                
                 data.append('notes', formData.notes);
+                // data.append('assignedTo', formData.assignedTo); // Not used by backend, but okay to keep if needed later
+                data.append('careProfileId', careProfileId);
+
+                // Context Tags
+                data.append('contextTags', JSON.stringify(formData.contextTags));
 
                 if (formData.image) {
                     data.append('image', formData.image);
                 }
 
-                // Default careProfileId if not handled by backend
-                // data.append('careProfileId', "default"); 
+                await createMedication(data);
 
-                await addMedication(data);
-                alert('Medication added successfully!');
-                navigate('/dashboard/caregiver');
-            } catch (error) {
-                console.error("Error adding medication:", error);
-                if (error.response) {
-                    console.error("Server Error Data:", error.response.data);
-                }
-                alert('Failed to add medication: ' + (error.response?.data?.message || error.message));
+                alert('✅ Medication saved successfully!');
+                navigate('/medications');
+            } catch (err) {
+                console.error('Error saving medication:', err);
+                alert('Failed to save medication. Please check console.');
+            } finally {
+                setSaving(false);
             }
         }
     };
 
     const handleBack = () => {
         if (currentStep > 1) setCurrentStep(currentStep - 1);
-    };
-
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setFormData(prev => ({
-                ...prev,
-                image: file,
-                imagePreview: URL.createObjectURL(file)
-            }));
-        }
     };
 
     const toggleContextTag = (tag) => {
@@ -138,7 +148,7 @@ const AddMedication = () => {
                         <div key={step.id} className="step-item">
                             <div className="step-indicator">
                                 <div className={`step-circle ${step.id < currentStep ? 'completed' :
-                                        step.id === currentStep ? 'current' : 'upcoming'
+                                    step.id === currentStep ? 'current' : 'upcoming'
                                     }`}>
                                     {step.id < currentStep ? '✓' : step.id}
                                 </div>
@@ -164,7 +174,26 @@ const AddMedication = () => {
                     <>
                         <div className="form-header">
                             <h1>Medication Information</h1>
-                            <p>Enter the medication name, type and dosage</p>
+                            <p>Enter the medication name and dosage</p>
+                        </div>
+
+                        {/* ML Scanner */}
+                        <div className="section-scanner">
+                            <MedicationScanner
+                                onScanComplete={(name, fullText) => {
+                                    if (name) {
+                                        setFormData(prev => ({ ...prev, medicationName: name }));
+                                        // Optional: Try to find dosage in fullText using regex
+                                        const strengthMatch = fullText.match(/(\d+\s*mg)/i);
+                                        if (strengthMatch) {
+                                            setFormData(prev => ({ ...prev, strength: strengthMatch[0] }));
+                                        }
+                                        alert(`Scanned: ${name}`);
+                                    } else {
+                                        alert('Could not detect distinct medication name. Please enter manually.');
+                                    }
+                                }}
+                            />
                         </div>
 
                         <div className="form-section">
@@ -204,29 +233,26 @@ const AddMedication = () => {
                                     </div>
                                 )}
                             </div>
-                            
-                             <div className="form-group">
-                                <label className="form-label">Type</label>
-                                <select 
-                                    className="form-input"
-                                    value={formData.type}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value }))}
-                                >
-                                    {medicationTypes.map(type => (
-                                        <option key={type} value={type}>{type}</option>
-                                    ))}
-                                </select>
-                            </div>
 
                             <div className="input-row">
                                 <div className="form-group">
-                                    <label className="form-label">Dosage</label>
+                                    <label className="form-label">Type</label>
+                                    <select
+                                        className="form-input"
+                                        value={formData.type}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value }))}
+                                    >
+                                        {typeOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Strength / Dosage</label>
                                     <input
                                         type="text"
                                         className="form-input"
                                         placeholder="e.g., 10mg"
-                                        value={formData.dosage}
-                                        onChange={(e) => setFormData(prev => ({ ...prev, dosage: e.target.value }))}
+                                        value={formData.strength}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, strength: e.target.value }))}
                                     />
                                 </div>
                             </div>
@@ -300,7 +326,7 @@ const AddMedication = () => {
                     <>
                         <div className="form-header">
                             <h1>Additional Details</h1>
-                            <p>Add context, photo, and instructions</p>
+                            <p>Add context and instructions</p>
                         </div>
 
                         <div className="form-section">
@@ -321,23 +347,24 @@ const AddMedication = () => {
 
                             <div className="form-group">
                                 <label className="form-label">Photo (Optional)</label>
-                                <div className="photo-upload-container">
-                                    <label htmlFor="file-upload" className="photo-upload">
-                                        <span className="photo-upload-icon">📷</span>
-                                        <span className="photo-upload-text">Click to upload photo</span>
-                                    </label>
-                                    <input 
-                                        id="file-upload" 
-                                        type="file" 
-                                        accept="image/*" 
-                                        onChange={handleImageChange}
+                                <div className="photo-upload-wrapper">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        id="medication-image"
                                         style={{ display: 'none' }}
                                     />
-                                    {formData.imagePreview && (
-                                        <div className="image-preview">
-                                            <img src={formData.imagePreview} alt="Preview" style={{ maxWidth: '100px', marginTop: '10px' }} />
-                                        </div>
-                                    )}
+                                    <label htmlFor="medication-image" className="photo-upload" style={{ cursor: 'pointer' }}>
+                                        {previewUrl ? (
+                                            <img src={previewUrl} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }} />
+                                        ) : (
+                                            <>
+                                                <span className="photo-upload-icon">📷</span>
+                                                <span className="photo-upload-text">Click to upload photo</span>
+                                            </>
+                                        )}
+                                    </label>
                                 </div>
                             </div>
 
@@ -368,7 +395,7 @@ const AddMedication = () => {
                                 <div className="review-section">
                                     <div>
                                         <h4>Medication</h4>
-                                        <p>{formData.medicationName || 'Not specified'} ({formData.type}) - {formData.dosage}</p>
+                                        <p>{formData.medicationName || 'Not specified'} {formData.strength} ({formData.type})</p>
                                     </div>
                                     <button className="edit-btn" onClick={() => setCurrentStep(1)}>✏️</button>
                                 </div>
@@ -386,14 +413,13 @@ const AddMedication = () => {
                                     </div>
                                     <button className="edit-btn" onClick={() => setCurrentStep(3)}>✏️</button>
                                 </div>
-                                {formData.imagePreview && (
-                                     <div className="review-section">
-                                     <div>
-                                         <h4>Photo</h4>
-                                         <img src={formData.imagePreview} alt="Review" style={{ width: '50px', height: '50px', objectFit: 'cover' }} />
-                                     </div>
-                                     <button className="edit-btn" onClick={() => setCurrentStep(3)}>✏️</button>
-                                 </div>
+                                {previewUrl && (
+                                    <div className="review-section">
+                                        <div>
+                                            <h4>Photo</h4>
+                                            <img src={previewUrl} alt="Review" style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '4px', marginTop: '5px' }} />
+                                        </div>
+                                    </div>
                                 )}
                             </div>
 
@@ -403,7 +429,7 @@ const AddMedication = () => {
                                     <div className="notification-icon">💊</div>
                                     <div className="notification-content">
                                         <h4>Time for {formData.medicationName || 'medication'}</h4>
-                                        <p>{formData.dosage} {formData.contextTags[0] ? `• ${formData.contextTags[0]}` : ''}</p>
+                                        <p>{formData.strength} {formData.contextTags[0] ? `• ${formData.contextTags[0]}` : ''}</p>
                                     </div>
                                 </div>
                             </div>
@@ -418,8 +444,8 @@ const AddMedication = () => {
                         {currentStep > 1 && (
                             <button className="btn-back" onClick={handleBack}>Back</button>
                         )}
-                        <button className="btn-next" onClick={handleNext}>
-                            {currentStep === 4 ? 'Save Medication' : 'Next'}
+                        <button className="btn-next" onClick={handleNext} disabled={saving}>
+                            {saving ? 'Saving...' : (currentStep === 4 ? 'Save Medication' : 'Next')}
                         </button>
                     </div>
                 </div>
