@@ -1,0 +1,43 @@
+@import "./Login.css";
+
+/* Switch link */
+.switch {
+  margin-top: 22px;
+  text-align: center;
+  color: #4169E1;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* Divider (if you still use it) */
+.divider {
+  margin: 24px 0;
+  text-align: center;
+  position: relative;
+}
+
+.divider span {
+  background: white;
+  padding: 0 12px;
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e5e7eb;
+  z-index: -1;
+}
+
+/* Helper text */
+.hint {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-align: center;
+}

@@ -1,0 +1,56 @@
+/* Text under title */
+.subtitle {
+  color: #6b7280;
+  font-size: 1.05rem;
+  margin: 10px 0 28px;
+}
+
+/* Links under form */
+.links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.links span {
+  color: #4169E1;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+/* Inputs inside AuthLayout card */
+.auth-card-modern input {
+  width: 100%;
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  background: #f9fafb;
+}
+
+.auth-card-modern input:focus {
+  outline: none;
+  border-color: #4169E1;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(65, 105, 225, 0.15);
+}
+
+/* Buttons inside AuthLayout card */
+.auth-card-modern button {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  font-size: 1.05rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #4169E1, #5a7ef5);
+  color: white;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.auth-card-modern button:hover {
+  box-shadow: 0 10px 25px rgba(65, 105, 225, 0.35);
+  transform: translateY(-1px);
+}

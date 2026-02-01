@@ -1,0 +1,55 @@
+.onboarding-layout {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    #f0f7ff,
+    #e0e7ff
+  );
+}
+
+.onboarding-card {
+  background: white;
+  padding: 3rem;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.onboarding-card h1 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #1e3a8a;
+}
+
+.onboarding-card .subtitle {
+  color: #64748b;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.onboarding-card button {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #4169E1;
+  color: white;
+  cursor: pointer;
+}
+
+.onboarding-card button:hover {
+  background: #365fd4;
+}
+
+.onboarding-card button.active {
+  background: #1e40af;
+}
