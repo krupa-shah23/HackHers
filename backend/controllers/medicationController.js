@@ -156,3 +156,80 @@ export const deactivateMedication = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Check for medications due soon (e.g. within 6 minutes)
+// Used by frontend polling for Pop-up/Sound
+export const getDueSoon = async (req, res) => {
+    try {
+        const CareProfile = (await import("../models/careProfileModel.js")).default;
+        
+        // 1. Find profiles managed by this user
+        // (Assuming user manages their own or others. We check ALL linked profiles)
+        // If user is elder, their profile is likely linked.
+        const profiles = await CareProfile.find({
+            $or: [{ createdBy: req.user._id }, { _id: { $in: req.user.linkedCareProfiles } }]
+        });
+        const profileIds = profiles.map(p => p._id);
+
+        const now = new Date();
+        const meds = await Medication.find({ 
+            careProfileId: { $in: profileIds },
+            active: true
+        });
+
+        const dueMeds = [];
+
+        for (const med of meds) {
+            // Simplified frequency check (assuming daily for MVP)
+            if (med.schedule.frequency !== 'daily' && med.schedule.frequency !== 'custom') {
+                 // skip complex logic for now
+            }
+
+            if (med.schedule.times && med.schedule.times.length > 0) {
+                for (const timeStr of med.schedule.times) {
+                    let [h, m] = [0, 0];
+                    const cleanTime = timeStr.toLowerCase().replace(/\s/g, '');
+                    
+                    if (cleanTime.includes('pm')) {
+                        const parts = cleanTime.replace('pm', '').split(':');
+                        h = parseInt(parts[0]);
+                        if (h < 12) h += 12;
+                        m = parseInt(parts[1]);
+                    } else if (cleanTime.includes('am')) {
+                        const parts = cleanTime.replace('am', '').split(':');
+                        h = parseInt(parts[0]);
+                        if (h === 12) h = 0;
+                        m = parseInt(parts[1]);
+                    } else {
+                        const parts = cleanTime.split(':');
+                        h = parseInt(parts[0]);
+                        m = parseInt(parts[1]);
+                    }
+
+                    const targetDate = new Date();
+                    targetDate.setHours(h, m, 0, 0);
+
+                    // If target is earlier today by a lot, ignore. 
+                    // If target is in future ~5 mins or just passed ~1 min (tolerant)
+                    const diffMs = targetDate - now;
+                    const diffMins = diffMs / 60000;
+
+                    // Due window: -1 min (just passed) to +6 mins (upcoming)
+                    if (diffMins > -1 && diffMins <= 6) {
+                        dueMeds.push({
+                            ...med.toObject(),
+                            dueTime: timeStr,
+                            dueTimestamp: targetDate
+                        });
+                    }
+                }
+            }
+        }
+
+        res.json(dueMeds);
+
+    } catch (error) {
+        console.error("UE soon check error:", error);
+        res.status(500).json({ message: error.message });
+    }
+};

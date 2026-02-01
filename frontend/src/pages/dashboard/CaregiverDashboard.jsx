@@ -43,9 +43,12 @@ const CaregiverDashboard = () => {
                 const [logs, meds, refills, serverInsights, risk] = await Promise.all([
                     getLogsByCareProfile(careProfileId).catch(() => []),
                     getMedicationsByCareProfile(careProfileId).catch(() => []),
-                    getUpcomingRefills().catch(() => []),
-                    getInsights(careProfileId).catch(() => []),
-                    getRiskScore(careProfileId).catch(() => null)
+                    // getUpcomingRefills().catch(() => []), 
+                    Promise.resolve([]),
+                    // getInsights(careProfileId).catch(() => []),
+                    Promise.resolve([]),
+                    // getRiskScore(careProfileId).catch(() => null)
+                    Promise.resolve(null)
                 ]);
 
                 if (risk) setRiskData(risk);

@@ -1,13 +1,14 @@
+// src/context/OnboardingContext.jsx
 import { createContext, useContext, useState } from "react";
 
 const OnboardingContext = createContext();
 
 export function OnboardingProvider({ children }) {
   const [onboarding, setOnboarding] = useState({
-    role: null,          // self | caregiver | both
-    careFor: null,       // parent | partner | child | other
-    comfortLevel: null,  // high | medium | low
-    priorities: [],      // meds, refills, routines, coordination
+    role: "",
+    careFor: "",
+    comfortLevel: "",
+    priorities: [],
   });
 
   const update = (data) =>

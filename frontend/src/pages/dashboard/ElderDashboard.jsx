@@ -1,124 +1,237 @@
-import { useState, useEffect } from 'react';
-import './ElderDashboard.css';
+import { useState, useEffect } from "react";
+import "./ElderDashboard.css";
+import { getDueMedications } from "../../services/api";
 
-const ElderDashboard = () => {
-    const [currentTime, setCurrentTime] = useState(new Date());
-    const [medicationTaken, setMedicationTaken] = useState(false);
+export default function ElderDashboard() {
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [showSOS, setShowSOS] = useState(false);
+  const [listening, setListening] = useState(false);
+  const [showCall, setShowCall] = useState(false);
+  const [done, setDone] = useState({
+    morningMeds: false,
+    walk: false,
+    lunch: false,
+    eveningMeds: false,
+  });
+  
+  /* REMINDER STATES */
+  const [reminders, setReminders] = useState([]);
+  const [showReminderModal, setShowReminderModal] = useState(false);
+  const [lastAlerted, setLastAlerted] = useState(null);
 
-    // Update time every minute
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentTime(new Date());
-        }, 60000);
-        return () => clearInterval(timer);
-    }, []);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-    const formatTime = () => {
-        return currentTime.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-        });
-    };
-
-    const handleTookIt = () => {
-        setMedicationTaken(true);
-        // Voice feedback could be added here
-        setTimeout(() => {
-            alert("Great job! Your family has been notified. ✅");
-        }, 300);
-    };
-
-    const handleRemindLater = () => {
-        alert("Okay! I'll remind you in 10 minutes. ⏰");
-    };
-
-    const handleVoiceAssistant = () => {
-        alert("🎙️ Voice Assistant: Press and hold to ask me anything!");
-    };
-
-    const handleCallAsha = () => {
-        alert("📞 Calling Asha...");
-    };
-
-    const handleSOS = () => {
-        if (confirm("🆘 Emergency! Call for help?")) {
-            alert("Calling emergency contact...");
+  useEffect(() => {
+    const checkReminders = async () => {
+        try {
+            const dueList = await getDueMedications();
+            if (dueList && dueList.length > 0) {
+                 const key = `${dueList[0]._id}-${dueList[0].dueTime}`;
+                 if (key !== lastAlerted) {
+                     setReminders(dueList);
+                     setShowReminderModal(true);
+                     setLastAlerted(key);
+                     playSound();
+                 }
+            }
+        } catch (e) {
+            console.error("Polling error", e);
         }
     };
+    
+    // Check initially and then every 45s
+    const timeout = setTimeout(checkReminders, 2000); 
+    const interval = setInterval(checkReminders, 45000);
+    
+    return () => { clearTimeout(timeout); clearInterval(interval); };
+  }, [lastAlerted]);
 
-    const routineSteps = [
-        { id: 1, label: 'Morning Meds', icon: '💊', status: medicationTaken ? 'completed' : 'current' },
-        { id: 2, label: 'Walk', icon: '🚶', status: 'pending' },
-        { id: 3, label: 'Lunch', icon: '🍽️', status: 'pending' },
-        { id: 4, label: 'Evening Meds', icon: '💊', status: 'pending' }
-    ];
+  // 3. HELPERS
+  const playSound = () => {
+     try {
+       const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+       audio.play().catch(e => console.log("Audio autoplay blocked:", e));
+     } catch (e) {}
+  };
 
-    return (
-        <div className="elder-dashboard-v2">
-            {/* Top Bar */}
-            <div className="elder-top-bar">
-                <div className="current-time-large">{formatTime()}</div>
-                <button className="voice-button-pulse" onClick={handleVoiceAssistant} aria-label="Voice Assistant">
-                    🎙️
-                </button>
-            </div>
+  const markDone = (key) => {
+    setDone((prev) => ({ ...prev, [key]: true }));
+  };
 
-            {/* Main Content */}
-            <div className="elder-main-content">
-                {/* Medication Card */}
-                {!medicationTaken && (
-                    <div className="medication-card-giant">
-                        <div className="pill-image-large">💊</div>
-                        <h2 className="med-title-simple">Your Morning Medicine</h2>
-                        <p className="med-name-simple">Blood Pressure Medicine</p>
+  const time = currentTime.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
 
-                        <div className="giant-action-buttons">
-                            <button className="giant-btn took-it" onClick={handleTookIt}>
-                                ✓ I Took It
-                            </button>
-                            <button className="giant-btn remind-later" onClick={handleRemindLater}>
-                                ⏰ Remind Me in 10 Min
-                            </button>
-                        </div>
-                    </div>
-                )}
+  const date = currentTime.toLocaleDateString([], {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  });
 
-                {medicationTaken && (
-                    <div className="medication-card-giant">
-                        <div className="pill-image-large">✅</div>
-                        <h2 className="med-title-simple">All Done!</h2>
-                        <p className="med-name-simple">You're doing great today.</p>
-                    </div>
-                )}
+  // 4. RENDER
+  return (
+    <div className="elder-container">
+      <div className="elder-shell">
+        {/* TOP BAR */}
+        <div className="elder-top">
+          <div>
+            <h1>{time}</h1>
+            <p className="date">{date}</p>
+          </div>
 
-                {/* Today's Routine */}
-                <div className="routine-card">
-                    <h3 className="routine-title">Today's Routine</h3>
-                    <div className="routine-steps">
-                        {routineSteps.map(step => (
-                            <div key={step.id} className="routine-step">
-                                <div className={`step-icon ${step.status}`}>
-                                    {step.status === 'completed' ? '✓' : step.icon}
-                                </div>
-                                <span className="step-label">{step.label}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Call Asha Button */}
-                <button className="call-asha-button" onClick={handleCallAsha}>
-                    📞 Call Asha
-                </button>
-            </div>
-
-            {/* SOS Button - Subtle but accessible */}
-            <button className="sos-button-subtle" onClick={handleSOS} aria-label="Emergency SOS">
-                SOS
-            </button>
+          {/* MIC BUTTON */}
+          <button
+            className={`mic ${listening ? "listening" : ""}`}
+            onClick={() => setListening(true)}
+            aria-label="Voice input"
+          >
+            🎤
+          </button>
         </div>
-    );
-};
 
-export default ElderDashboard;
+        {/* STATUS */}
+        {done.morningMeds && (
+          <div className="elder-card success subtle">
+            ✓ Morning medicine taken
+          </div>
+        )}
+
+        {/* ROUTINE */}
+        <div className="elder-card">
+          <h3>Today's Routine</h3>
+
+          <div className="routine-row">
+            <RoutineItem
+              label="Morning Meds"
+              icon="💊"
+              done={done.morningMeds}
+              onClick={() => markDone("morningMeds")}
+            />
+            <RoutineItem
+              label="Walk"
+              icon="🚶"
+              done={done.walk}
+              onClick={() => markDone("walk")}
+            />
+            <RoutineItem
+              label="Lunch"
+              icon="🍽️"
+              done={done.lunch}
+              onClick={() => markDone("lunch")}
+            />
+            <RoutineItem
+              label="Evening Meds"
+              icon="💊"
+              done={done.eveningMeds}
+              onClick={() => markDone("eveningMeds")}
+            />
+          </div>
+        </div>
+
+        {/* CALL RELATIVE */}
+        <button className="call-btn" onClick={() => setShowCall(true)}>
+          📞 Call Relative
+        </button>
+
+        {showCall && (
+          <Modal onClose={() => setShowCall(false)}>
+            <h2>Call Relative</h2>
+            <p className="modal-sub">Do you want to call your relative?</p>
+
+            <button className="call-now">
+              Call Now
+            </button>
+
+            <button className="cancel" onClick={() => setShowCall(false)}>
+              Cancel
+            </button>
+          </Modal>
+        )}
+
+      </div>
+
+      {/* SOS FLOATING */}
+      <button className="sos-btn" onClick={() => setShowSOS(true)}>
+        SOS
+      </button>
+
+      {/* SOS MODAL */}
+      {showSOS && (
+        <Modal onClose={() => setShowSOS(false)}>
+          <h2>Emergency Call</h2>
+          <p className="modal-sub">Calling Relative</p>
+          <button className="call-now">Call Now</button>
+          <button className="cancel" onClick={() => setShowSOS(false)}>
+            Cancel
+          </button>
+        </Modal>
+      )}
+
+      {/* REMINDER MODAL */}
+      {showReminderModal && (
+        <Modal onClose={() => setShowReminderModal(false)}>
+          <div className="voice-ring" style={{background: '#f59e0b', animation: 'none', boxShadow: '0 0 0 10px #fcd34d'}}></div>
+          <h2>Medication Reminder</h2>
+          <p className="modal-sub">
+            It's time to take your: <br/>
+            {reminders.map(m => <strong key={m._id}>{m.name} ({m.dosage})<br/></strong>)}
+          </p>
+          <button className="call-now" style={{background: '#10b981'}} onClick={() => setShowReminderModal(false)}>
+            I Took It
+          </button>
+          <button className="cancel" onClick={() => setShowReminderModal(false)}>
+            Remind Later
+          </button>
+        </Modal>
+      )}
+
+      {/* VOICE MODAL */}
+      {listening && (
+        <Modal onClose={() => setListening(false)}>
+          <div className="voice-ring"></div>
+          <h2>Listening…</h2>
+          <p className="modal-sub">
+            Say “I took my medicine” or “Call my relative”
+          </p>
+          <button className="cancel" onClick={() => setListening(false)}>
+            Stop Listening
+          </button>
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+/* ---------- SMALL COMPONENTS ---------- */
+
+function RoutineItem({ label, icon, done, onClick }) {
+  return (
+    <div
+      className={`routine-item ${done ? "done" : ""}`}
+      onClick={!done ? onClick : undefined}
+    >
+      <div className="routine-icon">{done ? "✓" : icon}</div>
+      <span>{label}</span>
+    </div>
+  );
+}
+
+function Modal({ children, onClose }) {
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div
+        className="modal premium"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}

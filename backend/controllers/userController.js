@@ -14,16 +14,36 @@ export const getMe = async (req, res) => {
   }
 };
 
+import fs from 'fs';
+
 export const updateMe = async (req, res) => {
+  const logPath = "C:\\Users\\DELL\\.gemini\\antigravity\\brain\\786461ef-c8bc-4096-9f59-51fdc512db41\\backend_debug.log";
+  const log = (msg) => {
+    try { fs.appendFileSync(logPath, `${new Date().toISOString()}: ${msg}\n`); } catch(e){}
+  };
+
   try {
+      log("updateMe called");
+      log(`req.userId (from token): ${req.userId}`); // Check if legacy field is there
+      log(`req.user: ${JSON.stringify(req.user)}`);
+      log(`req.body: ${JSON.stringify(req.body)}`);
+
+      if (!req.user || !req.user._id) {
+        log("ERROR: User ID not found in request");
+        throw new Error("User ID not found in request");
+      }
+
       const updatedUser = await User.findByIdAndUpdate(
-        req.user._id, // Fix: use req.user._id
+        req.user._id, 
         req.body,
-        { new: true }
+        { new: true, runValidators: true }
       ).select("-password");
 
+      log("Update success");
       res.json(updatedUser);
   } catch (error) {
+      log(`CRITICAL ERROR: ${error.stack}`);
+      console.error("updateMe Error:", error);
       res.status(500).json({ message: error.message });
   }
 };

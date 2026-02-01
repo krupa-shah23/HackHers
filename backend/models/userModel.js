@@ -44,6 +44,21 @@ const userSchema = new mongoose.Schema(
       type: Date,
     },
 
+    careFor: {
+      type: String,
+    },
+
+    comfortLevel: {
+      type: String,
+    },
+
+    priorities: [String],
+
+    onboardingCompleted: {
+      type: Boolean,
+      default: false,
+    },
+
   },
   { timestamps: true }
 );

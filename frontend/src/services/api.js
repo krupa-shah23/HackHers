@@ -41,4 +41,24 @@ export const addMedication = async (medicationData) => {
     }
 };
 
+export const updateUser = async (userData) => {
+    try {
+        const response = await api.patch('/users/me', userData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating user:', error);
+        throw error;
+    }
+};
+
+export const getDueMedications = async () => {
+    try {
+        const response = await api.get('/medications/due-soon');
+        return response.data;
+    } catch (error) {
+        // Quietly fail for polling
+        return [];
+    }
+};
+
 export default api;

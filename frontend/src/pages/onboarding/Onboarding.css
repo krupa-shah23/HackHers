@@ -1,0 +1,201 @@
+.onboarding-wrapper {
+  min-height: 100vh;
+  background: #eef2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.onboarding-shell {
+  width: 900px;
+  max-width: 95%;
+  background: white;
+  border-radius: 24px;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+/* LEFT PANEL */
+.onboarding-left {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8); /* Blue gradient */
+  color: white;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.onboarding-left h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.onboarding-left p {
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+.step-indicator {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+/* RIGHT PANEL */
+.onboarding-right {
+  padding: 2.5rem;
+  color: #0f172a;
+}
+
+.onboarding-right h1 {
+  font-size: 1.7rem;
+  color: #1e3a8a;
+}
+
+.subtitle {
+  color: #64748b;
+  margin-bottom: 1.5rem;
+}
+
+.section-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+}
+
+/* OPTION CARD */
+.option-card {
+  border: 1.5px solid #e2e8f0; /* Thinner, cleaner border */
+  border-radius: 8px; /* Slightly squarer for Figma feel */
+  padding: 14px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  background: white;
+  position: relative;
+}
+
+/* Explicitly target the strong tag inside OptionCard */
+.option-card strong {
+  display: block;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+/* Legacy classes support */
+.option-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.option-desc {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.option-card:hover {
+  border-color: #60a5fa; /* Light blue hover */
+  transform: translateY(-1px);
+}
+
+.option-card.selected {
+  border-color: #2563eb; /* Figma Blue */
+  background: #eff6ff;
+  box-shadow: 0 0 0 1px #2563eb; /* Double border effect like Figma selection */
+}
+
+/* Ensure all paragraphs in the right panel are dark */
+.onboarding-right p {
+  color: #334155; 
+}
+
+/* BUTTON */
+.primary-btn {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: #2563eb; /* Blue */
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.primary-btn:hover {
+  background: #1d4ed8;
+}
+
+.primary-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #94a3b8;
+}
+
+/* CHIP */
+.chip {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #f1f5f9;
+  border-radius: 6px; /* Squarer */
+  margin-right: 8px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #475569;
+  cursor: pointer;
+  transition: 0.2s;
+  border: 1px solid transparent;
+}
+
+.chip:hover {
+  background: #e2e8f0;
+}
+
+.chip.selected {
+  background: #eff6ff;
+  color: #1e40af;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px #2563eb;
+}
+
+/* PROGRESS BAR */
+.progress-container {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #64748b; /* text-muted */
+  margin-bottom: 0.5rem;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #6366f1; /* primary */
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}

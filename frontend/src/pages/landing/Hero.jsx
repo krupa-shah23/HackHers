@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import ECGHeart from './ECGHeart';
 import './Hero.css';
 
 const Hero = () => {
+    const navigate = useNavigate();
+
     return (
         <section className="hero" id="home">
             {/* Background orbs */}
@@ -27,7 +30,10 @@ const Hero = () => {
                     </p>
 
                     <div className="hero-cta">
-                        <button className="btn btn-primary">
+                        <button 
+                            className="btn btn-primary"
+                            onClick={() => navigate("/signup")}
+                        >
                             Get Started
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M5 12h14M12 5l7 7-7 7" />

@@ -65,7 +65,7 @@
 //   );
 // }
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 /* LANDING */
 import Landing from "./pages/landing/Landing";
@@ -76,11 +76,10 @@ import Signup from "./pages/auth/Signup";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 
 /* ONBOARDING */
-import RoleIntro from "./pages/onboarding/RoleIntro";
-import CareContext from "./pages/onboarding/CareContext";
-import ComfortLevel from "./pages/onboarding/ComfortLevel";
-import CarePriorities from "./pages/onboarding/CarePriorities";
-import OnboardingDone from "./pages/onboarding/OnboardingDone";
+import Start from "./pages/onboarding/screens/Start";
+import Setup from "./pages/onboarding/screens/Setup";
+import Finish from "./pages/onboarding/screens/Finish";
+import RoleIntro from "./pages/onboarding/RoleIntro"; // Keep legacy just in case? Or remove.
 
 // later you will add more onboarding screens here
 
@@ -109,11 +108,18 @@ export default function App() {
     {/* PROTECTED ROUTES */}
     <Route element={<ProtectedRoute />}>
       {/* ONBOARDING */}
-      <Route path="/onboarding/role" element={<RoleIntro />} />
-      <Route path="/onboarding/context" element={<CareContext />} />
-      <Route path="/onboarding/comfort" element={<ComfortLevel />} />
-      <Route path="/onboarding/priorities" element={<CarePriorities />} />
-      <Route path="/onboarding/done" element={<OnboardingDone />} />
+      <Route path="/onboarding/start" element={<Navigate to="/onboarding/role" replace />} />
+      
+      {/* New Flow */}
+      <Route path="/onboarding/role" element={<Start />} />
+      <Route path="/onboarding/setup" element={<Setup />} />
+      <Route path="/onboarding/finish" element={<Finish />} />
+      
+      {/* Legacy Redirects (optional) */}
+      <Route path="/onboarding/context" element={<Navigate to="/onboarding/role" replace />} />
+      <Route path="/onboarding/comfort" element={<Navigate to="/onboarding/setup" replace />} />
+      <Route path="/onboarding/priorities" element={<Navigate to="/onboarding/setup" replace />} />
+      <Route path="/onboarding/done" element={<Navigate to="/onboarding/finish" replace />} />
 
       {/* DASHBOARDS */}
       <Route path="/dashboard/caregiver" element={<CaregiverDashboard />} />

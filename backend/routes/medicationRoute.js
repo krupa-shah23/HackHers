@@ -5,6 +5,7 @@ import {
   getMedicationById,
   updateMedication,
   deactivateMedication,
+  getDueSoon
 } from "../controllers/medicationController.js";
 
 import upload from "../middleware/upload.js";
@@ -20,6 +21,7 @@ router.post("/", (req, res, next) => {
     console.log("Headers:", req.headers['content-type']);
     next();
 }, upload.single('image'), createMedication);
+router.get("/due-soon", getDueSoon); // Poll for popups
 router.get("/care-profile/:careProfileId", getMedicationsByCareProfile);
 router.get("/:id", getMedicationById);
 router.put("/:id", updateMedication);
